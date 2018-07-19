@@ -21,7 +21,7 @@ use ieee.std_logic_1164.all;
 
 entity ls259 is
 Port(	
-	Clk	: in	std_logic;			-- Synchronous clock
+	Clk	: instd_logic;				-- Synchronous clock
 	A 	: in  std_logic_vector(2 downto 0);	-- Address input
       	D 	: in  std_logic;			-- Data input
       	E_n 	: in  std_logic;			-- Enable (active low)
