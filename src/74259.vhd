@@ -2,6 +2,18 @@
 -- Unlike the original part, this one is synchronous, all changes occurring 
 -- on the rising edge of the clock
 -- (c) 2018 James Sweet
+--
+-- This is free software: you can redistribute
+-- it and/or modify it under the terms of the GNU General
+-- Public License as published by the Free Software
+-- Foundation, either version 3 of the License, or (at your
+-- option) any later version.
+--
+-- This is distributed in the hope that it will
+-- be useful, but WITHOUT ANY WARRANTY; without even the
+-- implied warranty of MERCHANTABILITY or FITNESS FOR A
+-- PARTICULAR PURPOSE. See the GNU General Public License
+-- for more details.
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -9,12 +21,12 @@ use ieee.std_logic_1164.all;
 
 entity ls259 is
 Port(	
-		Clk	: in	std_logic;							-- Synchronous clock
-		A 		: in  std_logic_vector(2 downto 0);	-- Address input
-      D 		: in  std_logic;							-- Data input
-      E_n 	: in  std_logic;							-- Enable (active low)
-      C_n 	: in  std_logic;							-- Clear (active low)
-      Q_out	: out std_logic_vector(7 downto 0)	-- Output
+	Clk	: in	std_logic;			-- Synchronous clock
+	A 	: in  std_logic_vector(2 downto 0);	-- Address input
+      	D 	: in  std_logic;			-- Data input
+      	E_n 	: in  std_logic;			-- Enable (active low)
+      	C_n 	: in  std_logic;			-- Clear (active low)
+      	Q_out	: out std_logic_vector(7 downto 0)	-- Output
 		);
 end ls259;
 
