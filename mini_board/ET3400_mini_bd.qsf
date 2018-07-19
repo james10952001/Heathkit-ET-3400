@@ -61,7 +61,7 @@ set_location_assignment PIN_87 -to PS2_Dat
 set_location_assignment PIN_51 -to Disp_clk
 set_location_assignment PIN_47 -to Disp_Dat
 set_location_assignment PIN_40 -to Disp_Load
-set_location_assignment PIN_26 -to Seg_test_n
+set_location_assignment PIN_27 -to Seg_test_n
 set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to Keypd_row[5]
 set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to Keypd_row[4]
 set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to Keypd_row[3]
