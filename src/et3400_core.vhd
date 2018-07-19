@@ -22,70 +22,69 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
-use  IEEE.STD_LOGIC_ARITH.all;
-use  IEEE.STD_LOGIC_UNSIGNED.all;
+use ieee.std_logic_arith.all;
 
 entity et3400_core is
 	port(
 		Reset_n		: in 		std_logic;
 		Clk_16M		: in 		std_logic;
-		Phi2			: buffer std_logic;
-		VMA_phi2_n	: buffer std_logic;
+		Phi2		: buffer 	std_logic;
+		VMA_phi2_n	: buffer 	std_logic;
 		Seg_test_n	: in		std_logic;
 		Kb_row		: in 		std_logic_vector(5 downto 0);
-		Kb_col		: out 	std_logic_vector(2 downto 0);
-		Hex_H			: out 	std_logic_vector(7 downto 0);
-		Hex_I			: out 	std_logic_vector(7 downto 0);
-		Hex_N			: out		std_logic_vector(7 downto 0);
+		Kb_col		: out 		std_logic_vector(2 downto 0);
+		Hex_H		: out 		std_logic_vector(7 downto 0);
+		Hex_I		: out 		std_logic_vector(7 downto 0);
+		Hex_N		: out		std_logic_vector(7 downto 0);
 		Hex_Z 		: out		std_logic_vector(7 downto 0);
-		Hex_V			: out 	std_logic_vector(7 downto 0);
-		Hex_C			: out 	std_logic_vector(7 downto 0);
-		IRQ_n			: in  	std_logic := '1';
-		NMI_n			: in  	std_logic := '1';
-		Hold_n		: in  	std_logic := '1';
-		Halt_n		: in  	std_logic := '1';
-		RW_n			: buffer	std_logic;
-		CPU_addr		: buffer std_logic_vector(15 downto 0);
+		Hex_V		: out 		std_logic_vector(7 downto 0);
+		Hex_C		: out 		std_logic_vector(7 downto 0);
+		IRQ_n		: in  		std_logic := '1';
+		NMI_n		: in  		std_logic := '1';
+		Hold_n		: in  		std_logic := '1';
+		Halt_n		: in  		std_logic := '1';
+		RW_n		: buffer	std_logic;
+		CPU_addr	: buffer 	std_logic_vector(15 downto 0);
 		DBus_in		: in		std_logic_vector(7 downto 0);
-		CPU_Dout		: buffer	std_logic_vector(7 downto 0)
+		CPU_Dout	: buffer	std_logic_vector(7 downto 0)
 	);
 end et3400_core;
 
 architecture rtl of et3400_core is
 
-signal cpu_vma						: std_logic;
+signal cpu_vma					: std_logic;
 signal cpu_hold					: std_logic;
 signal cpu_halt					: std_logic;
-signal cpu_irq						: std_logic;
-signal cpu_nmi						: std_logic;
-signal cpu_din						: std_logic_vector(7 downto 0);
+signal cpu_irq					: std_logic;
+signal cpu_nmi					: std_logic;
+signal cpu_din					: std_logic_vector(7 downto 0);
 
 signal rom_dout					: std_logic_vector(7 downto 0);
-signal rom_cs						: std_logic;
+signal rom_cs					: std_logic;
 
-signal ram1_ce						: std_logic := '0';
-signal ram2_ce						: std_logic := '0';
-signal ram1_wren			 		: std_logic := '0';
-signal ram2_wren			 		: std_logic := '0';
-signal ram1_dout					: std_logic_vector(7 downto 0);
-signal ram2_dout					: std_logic_vector(7 downto 0);
+signal ram1_ce					: std_logic := '0';
+signal ram2_ce					: std_logic := '0';
+signal ram1_wren			 	: std_logic := '0';
+signal ram2_wren			 	: std_logic := '0';
+signal ram1_dout				: std_logic_vector(7 downto 0);
+signal ram2_dout				: std_logic_vector(7 downto 0);
 
-signal kb_cs_n					   : std_logic;
+signal kb_cs_n					: std_logic;
 
-signal hexH_en						: std_logic;
-signal hexI_en						: std_logic;
-signal hexN_en						: std_logic;
-signal hexZ_en						: std_logic;
-signal hexV_en						: std_logic;
-signal hexC_en						: std_logic;
+signal hexH_en					: std_logic;
+signal hexI_en					: std_logic;
+signal hexN_en					: std_logic;
+signal hexZ_en					: std_logic;
+signal hexV_en					: std_logic;
+signal hexC_en					: std_logic;
 
-signal clkdiv						: std_logic_vector(23 downto 0);
+signal clkdiv					: std_logic_vector(23 downto 0);
 signal clk_500k					: std_logic;
-signal phi1							: std_logic;
+signal phi1					: std_logic;
 signal mem_phi2					: std_logic;
 
-signal reset_h						: std_logic;
-signal RnW							: std_logic;
+signal reset_h					: std_logic;
+signal RnW					: std_logic;
 
 	
 begin
@@ -147,17 +146,17 @@ kb_col <= cpu_addr(2 downto 0);
 -- Note the CPU68 core is not cycle accurate at all
 CPU: entity work.cpu68
 port map(
-	clk		=> Phi1,
-	rst		=> Reset_h,
-	rw			=> RW_n,
-	vma		=>	CPU_vma,
+	clk => Phi1,
+	rst => Reset_h,
+	rw => RW_n,
+	vma => CPU_vma,
 	address	=> CPU_addr,
 	data_in	=> CPU_din,
-	data_out	=> CPU_dout,
-	hold 		=>	CPU_hold,
-	halt		=>	CPU_halt,
-	irq		=> CPU_irq,
-	nmi		=> CPU_nmi
+	data_out => CPU_dout,
+	hold => CPU_hold,
+	halt =>	CPU_halt,
+	irq => CPU_irq,
+	nmi => CPU_nmi
 	);
 
 -- On a real 6800 these signals are active-low, CPU68 core uses active high for some reason	
@@ -171,21 +170,21 @@ RnW <= not RW_n;
 -- 256 Byte RAM IC14-IC15
 RAM1: entity work.ram_256b
 port map(
-	address 	=> CPU_addr(7 downto 0),
-	clock		=> Clk_16M,
-	data		=> CPU_dout,
-	wren		=> RAM1_wren, 
-	q			=> RAM1_dout
+	address => CPU_addr(7 downto 0),
+	clock => Clk_16M,
+	data => CPU_dout,
+	wren => RAM1_wren, 
+	q => RAM1_dout
 	);
 
 -- 256 Byte RAM IC16-IC17
 RAM2: entity work.ram_256b
 port map(
-	address 	=> CPU_addr(7 downto 0),
-	clock		=> Clk_16M,
-	data		=> CPU_dout,
-	wren		=> RAM2_wren,
-	q			=> RAM2_dout
+	address => CPU_addr(7 downto 0),
+	clock => Clk_16M,
+	data => CPU_dout,
+	wren => RAM2_wren,
+	q => RAM2_dout
 	);
 	
 	
@@ -193,79 +192,79 @@ port map(
 ROM: entity work.ET3400_ROM
 port map(
 	address	=> CPU_addr(9 downto 0),
-	clock		=> Clk_16M,
-	q			=> ROM_dout
+	clock => Clk_16M,
+	q => ROM_dout
 	);
 
 	
 -- LED display demux/latch drivers
 HEXH_DEMUX: entity work.ls259
 port map(
-	Clk   => Clk_16M,
-	A		=> cpu_addr(2 downto 0),
-	D		=> not cpu_dout(0),
-	E_n	=> hexH_en,
-	C_n	=> Seg_test_n,
-	Q_out	=> hex_h
+	Clk => Clk_16M,
+	A => cpu_addr(2 downto 0),
+	D => not cpu_dout(0),
+	E_n => hexH_en,
+	C_n => Seg_test_n,
+	Q_out => hex_h
 	);
 
 HEXI_DEMUX: entity work.ls259
 port map(
-	Clk   => Clk_16M,
-	A		=> cpu_addr(2 downto 0),
-	D		=> not cpu_dout(0),
-	E_n	=> hexI_en,
-	C_n	=> Seg_test_n,
-	Q_out	=> hex_i
+	Clk => Clk_16M,
+	A => cpu_addr(2 downto 0),
+	D => not cpu_dout(0),
+	E_n => hexI_en,
+	C_n => Seg_test_n,
+	Q_out => hex_i
 	);
 	
 HEXN_DEMUX: entity work.ls259
 port map(
-	Clk   => Clk_16M,
-	A		=> cpu_addr(2 downto 0),
-	D		=> not cpu_dout(0),
-	E_n	=> hexN_en,
-	C_n	=> Seg_test_n,
-	Q_out	=> hex_n
+	Clk => Clk_16M,
+	A => cpu_addr(2 downto 0),
+	D => not cpu_dout(0),
+	E_n => hexN_en,
+	C_n => Seg_test_n,
+	Q_out => hex_n
 	);
 
 HEXZ_DEMUX: entity work.ls259
 port map(
-	Clk   => Clk_16M,
-	A		=> cpu_addr(2 downto 0),
-	D		=> not cpu_dout(0),
-	E_n	=> hexZ_en,
-	C_n	=> Seg_test_n,
-	Q_out	=> hex_z
+	Clk => Clk_16M,
+	A => cpu_addr(2 downto 0),
+	D => not cpu_dout(0),
+	E_n => hexZ_en,
+	C_n => Seg_test_n,
+	Q_out => hex_z
 	);	
 
 HEXV_DEMUX: entity work.ls259
 port map(
-	Clk   => Clk_16M,
-	A		=> cpu_addr(2 downto 0),
-	D		=> not cpu_dout(0),
-	E_n	=> hexV_en,
-	C_n	=> Seg_test_n,
-	Q_out	=> hex_v
+	Clk => Clk_16M,
+	A => cpu_addr(2 downto 0),
+	D => not cpu_dout(0),
+	E_n => hexV_en,
+	C_n => Seg_test_n,
+	Q_out => hex_v
 	);
 	
 HEXC_DEMUX: entity work.ls259
 port map(
-	Clk   => Clk_16M,
-	A		=> cpu_addr(2 downto 0),
-	D		=> not cpu_dout(0),
-	E_n	=> hexC_en,
-	C_n	=> Seg_test_n,
-	Q_out	=> hex_c
+	Clk => Clk_16M,
+	A => cpu_addr(2 downto 0),
+	D => not cpu_dout(0),
+	E_n => hexC_en,
+	C_n => Seg_test_n,
+	Q_out => hex_c
 	);
 	
 	
 -- CPU data-in MUX	
-cpu_din <= 	rom_dout when rom_cs = '1' else 
-				ram1_dout when ram1_ce = '1' else
-				ram2_dout when ram2_ce = '1' else
-				"00" & kb_row when kb_cs_n = '0' else
-				--DBus_in when ... -- Add address decoding logic if you want to use this for external peripherals
-				x"FF"; 	
+cpu_din <= rom_dout when rom_cs = '1' else 
+	   ram1_dout when ram1_ce = '1' else
+	   ram2_dout when ram2_ce = '1' else
+	   "00" & kb_row when kb_cs_n = '0' else
+	   --DBus_in when ... -- Add address decoding logic if you want to use this for external peripherals
+	   x"FF"; 	
 	
 end;
