@@ -27,7 +27,7 @@ Port(
       	E_n 	: in  std_logic;			-- Enable (active low)
       	C_n 	: in  std_logic;			-- Clear (active low)
       	Q_out	: out std_logic_vector(7 downto 0)	-- Output
-		);
+	);
 end ls259;
 
 architecture rtl of ls259 is
