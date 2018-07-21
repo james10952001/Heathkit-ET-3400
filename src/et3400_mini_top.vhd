@@ -169,6 +169,7 @@ port map(
 ----Display: entity work.m7219
 --port map(
 --	clk => Clk_16M,
+--	rst_n => Reset_n,
 --	parallel => Display_in,
 --	clk_out => Disp_clk,
 --	data_out => Disp_Dat,
